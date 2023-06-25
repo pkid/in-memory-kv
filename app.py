@@ -18,11 +18,7 @@ def sync_kvs_from_file():
     try:
         with open(kv_file_name, 'r') as csvfile:
             csvreader = csv.reader(csvfile)
-            i = 0
             for row in csvreader:
-                i = i + 1
-                print("readling line " + str(i))
-                print (str(row))
                 key = row[0]
                 value = row[1]
                 is_deleted = row[2]
