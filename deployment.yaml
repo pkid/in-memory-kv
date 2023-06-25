@@ -12,9 +12,19 @@ spec:
       labels:
         app: myapp3
     spec:
+      volumes:
+        - name: my-pv
+          persistentVolumeClaim:
+            claimName: my-pvc
       containers:
         - name: myapp3
-          image: k8simg:latest
-          imagePullPolicy: Always
+          image: k8simg:v2
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: my-pv
+              mountPath: /data
           ports:
             - containerPort: 5001
+          env:
+            - name: KV_FILE_PATH
+              value: /data
