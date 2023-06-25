@@ -90,7 +90,7 @@ class TestApi(unittest.TestCase):
 
         with mock.patch('csv.reader', mock.MagicMock(return_value=reader(in_mem_csv, delimiter=',', quotechar='|'))):
              sync_kvs_from_file()
-
+        self.assertEqual(len(kv_store), 1)
         self.assertEqual(kv_store['123'], 'b')
 
 if __name__ == '__main__':

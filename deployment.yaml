@@ -18,7 +18,7 @@ spec:
             claimName: my-pvc
       containers:
         - name: myapp3
-          image: k8simg:v2
+          image: k8simg:v5
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: my-pv
@@ -28,3 +28,5 @@ spec:
           env:
             - name: KV_FILE_PATH
               value: /data
+            - name: SYNC_WHEN_NOT_FOUND
+              value: 'false'

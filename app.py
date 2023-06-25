@@ -11,8 +11,8 @@ app = Flask(__name__)
 kv_store = {}
 
 def sync_kvs_from_file():
-    current_datetime = datetime.datetime.now()
-    print("Starting to read file: " + str(current_datetime))
+    start_time = datetime.datetime.now()
+    print("Starting reading file: " + str(start_time))
     kv_file_name = os.getenv("KV_FILE_PATH") + "/kv_file.csv"
 
     try:
@@ -33,11 +33,16 @@ def sync_kvs_from_file():
     except FileNotFoundError:
         print("file does not exist")
 
+    end_time = datetime.datetime.now()
+    duration = end_time - start_time
+    print(f"done reading: duration {duration}")
+
 @app.route('/kvs/<string:key>', methods=['GET'])
 def get_value(key):
     try:
-        value = kv_store[key]
-        return jsonify({ key: value})
+        if key not in kv_store.keys() and os.getenv("SYNC_WHEN_NOT_FOUND") == 'true':
+            sync_kvs_from_file()
+        return jsonify({ key: kv_store[key]})   
     except KeyError:
         return jsonify({'error': 'Key not found'}), 404
 
@@ -89,7 +94,7 @@ def print_kv_store():
 def schedule_background_job():
     while True:
         sync_kvs_from_file()
-        time.sleep(5)
+        time.sleep(1)
  
 if __name__ == '__main__':
     scheduler_thread = threading.Thread(target=schedule_background_job)
