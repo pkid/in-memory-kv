@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: myapp3
-          image: k8simg:latest
-          imagePullPolicy: Always
+          image: k8simg:v1
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5001
