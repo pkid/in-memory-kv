@@ -18,7 +18,10 @@ spec:
             claimName: my-pvc
       containers:
         - name: myapp3
-          image: k8simg:v5
+          image: k8simg:v6
+          resources:
+            requests:
+              memory: "128Mi"
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: my-pv
@@ -30,3 +33,5 @@ spec:
               value: /data
             - name: SYNC_WHEN_NOT_FOUND
               value: 'false'
+            - name: JOB_FREQUENCY_IN_SECONDS
+              value: '1'

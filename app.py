@@ -94,7 +94,7 @@ def print_kv_store():
 def schedule_background_job():
     while True:
         sync_kvs_from_file()
-        time.sleep(1)
+        time.sleep(int(os.getenv("JOB_FREQUENCY_IN_SECONDS")))
  
 if __name__ == '__main__':
     scheduler_thread = threading.Thread(target=schedule_background_job)
